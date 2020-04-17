@@ -5,6 +5,15 @@
 module.exports = {
   devServer: {
     host: 'localhost',
-    port: 8090
+    port: 8090,
+    proxy: {
+      '/api': {
+        target: 'http://www.api.com/index.php/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   }
 }

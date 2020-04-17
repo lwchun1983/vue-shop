@@ -3,7 +3,7 @@
  * @Author: 278096437@qq.com 李万春
  -->
 <template>
-<swiper :options="swiperOptions" class="swiper-container">
+<swiper :options="swiperOptions" class="swiper-container" v-if="show">
   <swiper-slide v-for="item of swiperList" :key="item">
     <img :data-src="item" class="swiper-lazy swiper-img">
     <div class="swiper-lazy-preloader"></div>
@@ -16,6 +16,14 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 export default {
+  props: {
+    swiperList: Array
+  },
+  computed: {
+    show () {
+      return !!this.swiperList.length
+    }
+  },
   components: {
     Swiper,
     SwiperSlide
@@ -30,12 +38,7 @@ export default {
         lazy: {
           loadPrevNext: true,
         }
-      },
-      swiperList: [
-        'https://gw.alicdn.com/imgextra/i3/122/O1CN01r7ES9f1CluuJ07PvP_!!122-0-lubanu.jpg',
-        'https://gw.alicdn.com/imgextra/i4/158/O1CN01ihDgt41D2PAQAuVfp_!!158-0-lubanu.jpg',
-        'https://gw.alicdn.com/imgextra/i1/1550744/O1CN01zwJ2IE1HMnGAm7PnM_!!1550744-0-lubanu.jpg'
-      ]
+      }
     }
   }
 }
