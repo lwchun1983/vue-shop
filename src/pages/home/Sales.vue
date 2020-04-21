@@ -48,7 +48,6 @@ export default {
         }
         pages[page].push(val)
       })
-      console.log(pages)
       this.pages = pages
     }
   },

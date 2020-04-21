@@ -4,7 +4,7 @@
  -->
 <template>
 <div class="header">
-  <span class="iconfont back" v-if="back" @click="toBack">&#xe6be;</span>
+  <span class="iconfont back" v-if="showBack" @click="toBack">&#xe6be;</span>
   <span class="title">{{title}}</span>
 </div>
 </template>
@@ -17,13 +17,24 @@ export default {
       default: 'QianQian左右鞋包'
     },
     back: {
-      type: Boolean,
-      default: false
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    showBack () {
+      return this.back !== ''
     }
   },
   methods: {
-    toBack () {}
-  }
+    toBack () {
+      if (this.back === '') {
+        this.$router.push('/')
+      } else {
+        this.$router.push(this.back)
+      }
+    }
+  },
 }
 </script>
 

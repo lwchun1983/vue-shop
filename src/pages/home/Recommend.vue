@@ -27,11 +27,6 @@ export default {
   components: {
     Container
   },
-  computed: {
-    show () {
-      return !!this.recommendList.length
-    }
-  },
   mixins: [filters],
   watch: {
     recommendList (newList) {
