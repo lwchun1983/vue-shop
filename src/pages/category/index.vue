@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="page">
   <common-header title="分类" :back="backUrl"></common-header>
   <search-bar></search-bar>
   <div class="content">
@@ -46,7 +46,9 @@ export default {
   methods: {
     // 获取一级分类
     async getCategory () {
+      this.$showLoading()
       const category = await this.axios.get('api/goods_category?type=1')
+      this.$hideLoading()
       if (category.length > 0) {
         this.category = category
         this.getSubCategory(category[0].cat_id)
@@ -54,7 +56,9 @@ export default {
     },
     // 获取二级分类
     async getSubCategory (catId) {
+      this.$showLoading()
       this.subCategory = await this.axios.get('api/goods_category?type=1&cat_id=' + catId)
+      this.$hideLoading()
     },
     loadSubCategory (catId) {
       this.getSubCategory(catId)
@@ -65,6 +69,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/global";
+.page{
+  width: 100%;
+  min-height: 100%;
+  margin-top: $page-margin-top;
+}
 .content{
   width: 100%;
   height: 100%;

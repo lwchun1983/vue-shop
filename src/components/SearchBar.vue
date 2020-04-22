@@ -26,10 +26,14 @@ export default {
 @import "~@/assets/scss/global";
 .container{
   width: 100%;
-  height: .88rem;
+  height: $search-h;
   padding: .15rem .4rem;
   box-sizing: border-box;
   background: $color-a;
+  position: fixed;
+  left: 0;
+  top: $header-h;
+  z-index: 100;
   .search{
     width: 100%;
     height: 100%;

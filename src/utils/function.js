@@ -5,7 +5,7 @@ const formatPrice = function (price) {
   if (isNaN(num) || num === 0) {
     return arr[0]
   }
-  return arr[0] + num / 100
+  return parseInt(arr[0]) + num / 100
 }
 
 export {

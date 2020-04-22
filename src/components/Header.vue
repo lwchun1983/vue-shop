@@ -42,13 +42,17 @@ export default {
 @import "~@/assets/scss/global";
 .header{
   width: 100%;
-  height: .88rem;
+  height: $header-h;
   background: $color-a;
   position: relative;
   text-align: center;
-  line-height: .88rem;
+  line-height: $header-h;
   color: #fff;
   font-size: .36rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
   .back{
     display: block;
     width: 1rem;

@@ -7,14 +7,10 @@
 
 <script>
 export default {
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    },
-    mask: {
-      type: Boolean,
-      default: false
+  data () {
+    return {
+      show: false,
+      mask: false
     }
   }
 }
