@@ -8,6 +8,7 @@
            <div class="goods-info">
              <div class="goods-name">{{val.name}}</div>
              <div class="goods-price">￥{{val.price|formatPrice}}</div>
+             <cart-btn font-size=".3rem" :goods="val"></cart-btn>
            </div>
         </div>
       </swiper-slide>
@@ -22,6 +23,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import Container from './Container'
 import { filters } from '@/utils/mixins'
+import CartBtn from '@/components/CartBtn'
 export default {
   props: {
     salesList: Array
@@ -30,7 +32,8 @@ export default {
   components: {
     Container,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    CartBtn
   },
   computed: {
     show () {

@@ -9,7 +9,7 @@
         <span class="market-price">￥{{item.market_price|formatPrice}}</span>
       </div>
       <div class="goods-sales">{{item.sale_num}}人购买</div>
-      <div class="add-cart iconfont" >&#xe601;</div>
+      <cart-btn :goods="item"></cart-btn>
     </div>
   </div>
 </div>
@@ -17,11 +17,13 @@
 
 <script>
 import {filters} from '@/utils/mixins'
+import CartBtn from '@/components/CartBtn'
 export default {
   props: {
     list: Array
   },
-  mixins: [filters]
+  mixins: [filters],
+  components: { CartBtn }
 }
 </script>
 
@@ -79,16 +81,5 @@ export default {
 .goods-sales{
   color: #999;
   font-size: .28rem;
-}
-.add-cart{
-  width: .6rem;
-  height: .6rem;
-  line-height: .6rem;
-  text-align: center;
-  font-size: .4rem;
-  color: #ff5e46;
-  position: absolute;
-  right: 0;
-  bottom: 0;
 }
 </style>

@@ -8,6 +8,7 @@
           <div class="goods-info">
             <div class="goods-name">{{item.name}}</div>
             <div class="goods-price">￥{{item.price|formatPrice}}</div>
+            <cart-btn font-size=".28rem" :goods="item"></cart-btn>
           </div>
         </div>
       </div>
@@ -20,12 +21,14 @@
 import BScroll from 'better-scroll'
 import { filters } from '@/utils/mixins'
 import Container from './Container'
+import CartBtn from '@/components/CartBtn'
 export default {
   props: {
     recommendList: Array
   },
   components: {
-    Container
+    Container,
+    CartBtn
   },
   mixins: [filters],
   watch: {

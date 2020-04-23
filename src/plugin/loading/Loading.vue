@@ -1,8 +1,10 @@
 <template>
+<transition name="fade">
 <div class="loading-container" v-if="show">
   <div class="mask" v-if="mask"></div>
   <img src="/images/loading-svg/loading-bars.svg" class="loading-img">
 </div>
+</transition>
 </template>
 
 <script>
@@ -40,5 +42,12 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

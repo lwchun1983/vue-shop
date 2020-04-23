@@ -8,10 +8,10 @@
     <span class="iconfont">&#xe692;</span>
     <span>分类</span>
   </router-link>
-  <div class="footer-nav">
+  <router-link tag="div" to="/cart" class="footer-nav">
     <span class="iconfont">&#xe601;</span>
     <span>购物车</span>
-  </div>
+  </router-link>
   <div class="footer-nav">
     <span class="iconfont">&#xe60d;</span>
     <span>我的</span>
@@ -27,7 +27,7 @@ export default {}
 @import "~@/assets/scss/global";
 .footer-container{
   width: 100%;
-  height: 1.3rem;
+  height: $footer-h;
   background: #ffffff;
   position: fixed;
   left: 0;
