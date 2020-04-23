@@ -78,7 +78,7 @@ export default {
       this.selectAll = selectAll.length > 0 ? selectAll.length === this.cart.length : false
       this.total = total
       this.cartNum = cartNum
-      // Storage.setItem('cart', this.cart)
+      Storage.setItem('cart', this.cart)
     },
     toggleSelectAll () {
       this.cart.forEach(item => {
@@ -108,7 +108,7 @@ export default {
         content: '确定要删除吗',
         success: res => {
           const index = this.cart.findIndex(item => item.id === goodsId)
-          if (res.confirm && index > -1) {
+          if (res.confirm) {
             this.cart.splice(index, 1)
             this.countCart()
           }

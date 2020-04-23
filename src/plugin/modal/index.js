@@ -16,19 +16,11 @@ const modal = {
       vm.content = content
       vm.btn = btn
 
+      vm.$off('modal')
       vm.$on('modal', function (result) {
         success && success(result)
       })
     }
-    // Vue.prototype.$showLoading = function (mask = true) {
-    //   vm.show = true
-    //   vm.mask = mask
-    // }
-
-    // Vue.prototype.$hideLoading = function () {
-    //   vm.show = false
-    //   vm.mask = false
-    // }
   }
 }
 export default modal
