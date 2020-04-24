@@ -3,14 +3,14 @@
   <template v-slot:content>
     <div class="goods-list-container" ref="wrapper">
       <div class="goods-list" ref="recommend">
-        <div class="goods-item border" v-for="item of recommendList" :key="item.id">
+        <router-link tag="div" :to="`/goods-detail/${item.id}`" class="goods-item border" v-for="item of recommendList" :key="item.id">
           <img v-lazy="item.img" class="goods-img">
           <div class="goods-info">
             <div class="goods-name">{{item.name}}</div>
             <div class="goods-price">￥{{item.price|formatPrice}}</div>
             <cart-btn font-size=".28rem" :goods="item"></cart-btn>
           </div>
-        </div>
+        </router-link >
       </div>
     </div>
   </template>
