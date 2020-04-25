@@ -74,15 +74,7 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-  linkExactActiveClass: "active",
-  scrollBehavior (to, from, savedPosition) {
-    console.log(savedPosition)
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 400 }
-    }
-  }
+  linkExactActiveClass: "active"
 });
 
 export default router;

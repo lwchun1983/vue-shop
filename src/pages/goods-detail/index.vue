@@ -2,13 +2,28 @@
 <div>
   <detail-header :showIconMenu="showIconMenu" :opacity="headerOpacity" :scrollTab="scrollTab" @tab="changeTab"></detail-header>
   <div class="page" ref="page">
-    <div style="height: 3000px">
+    <div>
       <div id="goods">
         <detail-gallery :gallery="gallery"></detail-gallery>
       </div>
-      <div style="height: 200px;">商品</div>
-      <div style="height: 200px;" id="comment">评论</div>
-      <div id="detail">详情</div>
+      <detail-info :goods="goods"></detail-info>
+      <div id="comment">
+        <detail-comment :goodsId="id" :list="comment.list" :count="comment.count"></detail-comment>
+      </div>
+      <div id="detail">
+        <div class="title">
+          <div class="cell">
+            <hr>
+          </div>
+          <span>详情</span>
+          <div class="cell">
+            <hr>
+          </div>
+        </div>
+        <div class="img" v-for="(item,index) of goods.content" :key="index">
+          <img v-lazy="item">
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -18,13 +33,17 @@
 import BScroll from 'better-scroll'
 import DetailHeader from "./Header"
 import DetailGallery from "./Gallery"
+import DetailInfo from "./Info"
+import DetailComment from "./Comment"
 export default {
   props: {
     id: Number
   },
   components: {
     DetailHeader,
-    DetailGallery
+    DetailGallery,
+    DetailInfo,
+    DetailComment
   },
   data () {
     return {
@@ -101,5 +120,27 @@ export default {
   height: 100%;
   background: $color-c;
   overflow: hidden;
+  .title{
+    height: 1rem;
+    padding: 0 30%;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+    color: #666;
+    .cell{
+      width: 0;
+      flex: 1;
+    }
+    span{
+      padding: 0 .2rem;
+    }
+  }
+  .img{
+    width: 100%;
+    height: auto;
+    img{
+      width: 100%;
+    }
+  }
 }
 </style>

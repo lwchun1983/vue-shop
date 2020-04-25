@@ -29,7 +29,8 @@ export default {
     }
   },
   methods: {
-    addToCart () {
+    addToCart (e) {
+      e.stopPropagation()
       if (Object.keys(this.goods).length === 0) {
         return
       }

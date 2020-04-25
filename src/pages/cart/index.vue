@@ -4,7 +4,7 @@
   <div class="cart-list">
     <div v-for="item of cart" :key="item.id" :class="{'cart-delete': item.delete}" class="cart-item border-bottom" :data-goods-id="item.id" @touchstart="touchStart" @touchend="touchEnd">
       <input type="checkbox" class="checkbox" :checked="item.selected" @click="toggleSelect(item.id)">
-      <img class="goods-img" :src="item.img">
+      <img class="goods-img" :src="item.img" @click="toGoodsDetail(item.id)">
       <div class="goods-desc">
         <div class="goods-name">{{item.name}}</div>
         <div class="goods-price">
@@ -64,6 +64,9 @@ export default {
     this.countCart()
   },
   methods: {
+    toGoodsDetail (goodsId) {
+      this.$router.push(`/goods-detail/${goodsId}`)
+    },
     countCart () {
       let selectAll = []
       let total = 0

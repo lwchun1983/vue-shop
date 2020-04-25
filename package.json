@@ -50,7 +50,7 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "indent": false
+      "semi": 0
     }
   },
   "browserslist": [
