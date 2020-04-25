@@ -142,7 +142,8 @@ export default {
     initScroll () {
       this.$nextTick( () => {
         let bodyHeight = document.documentElement.offsetHeight
-        this.$refs.page.style.height = bodyHeight + 'px'
+        let footerHeight = document.querySelector('.footer').offsetHeight
+        this.$refs.page.style.height = bodyHeight - footerHeight + 'px'
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.page, this.scrollOptions)
         } else {
