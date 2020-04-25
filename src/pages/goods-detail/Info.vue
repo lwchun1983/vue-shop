@@ -39,7 +39,9 @@ export default{
     goods: Object
   },
   methods: {
-    getCoupon () {}
+    getCoupon () {
+      
+    }
   }
 }
 </script>

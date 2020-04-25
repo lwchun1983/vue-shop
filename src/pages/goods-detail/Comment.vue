@@ -2,7 +2,7 @@
   <div class="container">
     <div class="title border-bottom">
       <span>商品评价({{count}})</span>
-      <router-link tag="p" :to="'/goods-comment/' + goodsId" class="more">查看全部<span class="iconfont">&#xe637;</span></router-link>
+      <router-link tag="p" :to="'/goods-comment/' + goodsId" class="more" v-if="showMore">查看全部<span class="iconfont">&#xe637;</span></router-link>
     </div>
     <ul class="list">
       <li v-for="item of list" :key="item.id">
@@ -23,6 +23,14 @@ export default{
     list: Array,
     count: Number,
     goodsId: Number
+  },
+  computed: {
+    showMore () {
+      if (!this.list) {
+        return false
+      }
+      return !!this.list.length
+    }
   }
 }
 </script>

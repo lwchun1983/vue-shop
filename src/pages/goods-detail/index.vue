@@ -26,6 +26,26 @@
       </div>
     </div>
   </div>
+  <div class="footer border-top">
+    <div class="footer-left">
+      <div class="footer-cell" @click="$router.push('/')">
+        <span class="iconfont">&#xe603;</span>
+        首页
+      </div>
+      <div class="footer-cell">
+        <span class="iconfont">&#xe699;</span>
+        客服
+      </div>
+      <div class="footer-cell" :class="{collect: isCollect}" @click="collect">
+        <span class="iconfont">{{isCollect?'&#xe604;':'&#xe680;'}}</span>
+        {{isCollect?'已收藏':'收藏'}}
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="buy">立即购买</div>
+      <div class="cart">加入购物车</div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -35,6 +55,7 @@ import DetailHeader from "./Header"
 import DetailGallery from "./Gallery"
 import DetailInfo from "./Info"
 import DetailComment from "./Comment"
+import {Token} from '@/utils/token'
 export default {
   props: {
     id: Number
@@ -47,6 +68,7 @@ export default {
   },
   data () {
     return {
+      isCollect: false,
       scrollTab: 'goods',
       showIconMenu: true,
       headerOpacity: 0,
@@ -68,8 +90,51 @@ export default {
   mounted () {
     this.getGoods()
     this.initScroll()
+    this.initCollect()
   },
   methods: {
+    async initCollect () {
+      // 判断是否登录
+      const token = Token.getToken()
+      if (token === '') {
+        this.isCollect = false
+        return
+      }
+      this.axios.get('shose/collect/check', {
+        params: {
+          goods_id: this.id
+        },
+        headers: {
+          token
+        }
+      }).then(res => {
+        this.isCollect = res.collect === 1
+      })
+    },
+    async collect () {
+      // 判断是否登录
+      const token = Token.getToken()
+      if (token === '') { // 没有登录，则跳转至登录页面
+        const url = encodeURIComponent('/goods-detail/' + this.id)
+        this.$router.push(`/login?url=${url}`)
+        return
+      }
+      // 已经登录，判断是收藏还是取消收藏
+      let path = ''
+      if (this.isCollect) {
+        path = 'shose/collect/cancel'
+      } else {
+        path = 'shose/collect/confirm'
+      }
+      this.$showLoading()
+      await this.axios.post(path, {goods_id: this.id}, {
+        headers: {
+          token
+        }
+      })
+      this.$hideLoading()
+      this.isCollect = !this.isCollect
+    },
     changeTab (tabName) {
       this.scrollTab = tabName
       this.scroll.scrollToElement('#'+tabName, 1000, 0, -50)
@@ -97,6 +162,7 @@ export default {
     },
     getGoods () {
       this.axios.get(`api/goods?goods_id=${this.id}`).then(result => {
+        console.log(result)
         const {comment: commentList, commentTotal, gallery, goods} = result
         this.comment = {
           list: commentList,
@@ -140,6 +206,50 @@ export default {
     height: auto;
     img{
       width: 100%;
+    }
+  }
+}
+.footer{
+  width: 100%;
+  height: 1rem;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: #ffffff;
+  @include layout-flex;
+  .footer-left{
+    width: 0;
+    flex: 1;
+    height: 100%;
+    @include layout-flex;
+    color: $color-e;
+    .footer-cell{
+      width: 33.33%;
+      @include layout-flex(column);
+      font-size: .24rem;
+      .iconfont{
+        font-size: .3rem;
+        margin-bottom: .1rem;
+      }
+      &.collect{
+        color: #FF0036;
+      }
+    }
+  }
+  .footer-right{
+    width: 4.5rem;
+    height: 100%;
+    @include layout-flex;
+    background: $color-a;
+    .buy,.cart{
+      width: 50%;
+      height: 100%;
+      color: #ffffff;
+      @include layout-flex;
+      font-size: .3rem;
+    }
+    .buy{
+      background: #FF0036;
     }
   }
 }

@@ -6,6 +6,8 @@ import GoodsList from "../pages/goods-list/index"
 import GoodsDetail from "../pages/goods-detail/index";
 import GoodsError from "../pages/goods-notfound/index";
 import Cart from "../pages/cart/index";
+import Login from "../pages/login/index";
+import Register from "../pages/register/index";
 
 Vue.use(VueRouter);
 
@@ -45,6 +47,16 @@ const routes = [
     path: "/goods-error",
     name: "GoodsError",
     component: GoodsError
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register
   },
   {
     path: "/goods-detail",
