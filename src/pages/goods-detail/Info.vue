@@ -40,7 +40,9 @@ export default{
   },
   methods: {
     getCoupon () {
-      
+      // 判断是否登录
+      const url = encodeURIComponent('/goods-detail/' + this.goods.goods_id)
+      this.$router.push(`/coupon?url=${url}`)
     }
   }
 }

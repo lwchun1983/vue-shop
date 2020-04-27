@@ -90,7 +90,7 @@ export default {
         // 跳转页面
         this.$router.push(this.loginRedirect)
       }).catch(err => {
-        alert(err.message)
+        this.$showToast(err.message)
       })
     },
     validate (data) {
@@ -98,7 +98,7 @@ export default {
         if (Reflect.has(this.formDataValidator, key)) {
           const res = this.formDataValidator[key](data[key], data.password)
           if (res.error !== 0) {
-            alert(res.message)
+            this.$showToast(res.message)
             return false
           }
         }

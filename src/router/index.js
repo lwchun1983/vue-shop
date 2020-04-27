@@ -8,6 +8,8 @@ import GoodsError from "../pages/goods-notfound/index";
 import Cart from "../pages/cart/index";
 import Login from "../pages/login/index";
 import Register from "../pages/register/index";
+import Coupon from "../pages/coupon/index";
+import {Token} from "../utils/token"
 
 Vue.use(VueRouter);
 
@@ -63,6 +65,11 @@ const routes = [
     redirect: '/'
   },
   {
+    path: "/coupon",
+    name: "Coupon",
+    component: Coupon
+  },
+  {
     path: "/goods-detail/:id",
     beforeEnter (to, from, next) {
       const id = to.params.id
@@ -88,5 +95,22 @@ const router = new VueRouter({
   routes,
   linkExactActiveClass: "active"
 });
+
+// 需要做登录验证的路由名称
+const AUTH_ROUTER_NAME = ['Coupon']
+// 登录验证
+router.beforeEach((to, from, next) => {
+  if (AUTH_ROUTER_NAME.includes(to.name)) {
+    const token = Token.getToken()
+    if (token === '') {
+      const url = encodeURIComponent(from.path)
+      next(`/login?url=${url}`)
+    } else {
+      next()
+    }
+  } else{
+    next()
+  }
+})
 
 export default router;

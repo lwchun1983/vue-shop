@@ -8,7 +8,7 @@
       <li v-for="item of list" :key="item.id">
         <h1 class="title">
           <span>{{item.username}}</span>
-          <span>{{item.add_time}}</span>
+          <span>{{item.add_time|dateFormat}}</span>
         </h1>
         <div class="content">{{item.content}}</div>
       </li>
@@ -17,12 +17,18 @@
 </template>
 
 <script>
+import {dateFormat} from '@/utils/function'
 export default{
   name: 'Name',
   props: {
     list: Array,
     count: Number,
     goodsId: Number
+  },
+  filters: {
+    dateFormat (time) {
+      return dateFormat('YYYY-mm-dd HH:MM', new Date(time * 1000))
+    }
   },
   computed: {
     showMore () {
