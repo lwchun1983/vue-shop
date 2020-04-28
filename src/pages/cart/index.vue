@@ -27,7 +27,7 @@
     <div class="total">
       合计: <em>￥{{total.toFixed(2)}}</em>
     </div>
-    <div class="submit" onclick="submitCart()">结算({{cartNum}})</div>
+    <div class="submit" @click="submitCart">结算({{cartNum}})</div>
     </div>
   <common-footer></common-footer>
 </div>
@@ -64,6 +64,13 @@ export default {
     this.countCart()
   },
   methods: {
+    submitCart () {
+      if (this.cartNum === 0) {
+        this.$showToast('至少选择一个商品')
+        return
+      }
+      this.$router.push('/order?loginRedirect=' + encodeURIComponent('/order'))
+    },
     toGoodsDetail (goodsId) {
       this.$router.push(`/goods-detail/${goodsId}`)
     },

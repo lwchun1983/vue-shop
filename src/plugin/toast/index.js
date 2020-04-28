@@ -7,7 +7,7 @@ const loading = {
     vm.$mount(document.createElement('div'))
     document.body.appendChild(vm.$el)
 
-    Vue.prototype.$showToast = function (message = '', mask = true, duration = 1500) {
+    Vue.prototype.$showToast = function ({message = '', mask = true, duration = 1500,callback = null}) {
       if (message !== '') {
         vm.visible = true
         vm.mask = mask
@@ -16,6 +16,7 @@ const loading = {
           vm.visible = false
           vm.mask = false
           vm.message = ''
+          callback && callback()
         }, duration)
       }
     }
