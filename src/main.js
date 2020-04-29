@@ -14,7 +14,7 @@ import Modal from './plugin/modal'
 import Toast from './plugin/toast'
 
 axios.defaults.baseURL = '/api/';
-axios.defaults.timeout = 8000
+axios.defaults.timeout = 10000
 axios.defaults.headers.appkey = 'f68bSYqte0m6EibwhARrzTcYDPoV0FobCi06uDfM3eF4QGQQKSywmd71ytM'
 
 // 响应拦截

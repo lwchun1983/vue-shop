@@ -4,11 +4,11 @@
   <div class="add-address">
     <div class="row border-bottom">
       <label class="title">收货人</label>
-      <input type="text" placeholder="姓名" class="input">
+      <input type="text" placeholder="姓名" class="input" v-model="name">
     </div>
     <div class="row border-bottom">
       <label class="title">联系电话</label>
-      <input type="text" placeholder="手机" class="input">
+      <input type="text" placeholder="手机" class="input" v-model="phone">
     </div>
     <div class="row border-bottom">
       <label class="title">选择地区</label>
@@ -19,15 +19,18 @@
     </div>
     <div class="row border-bottom">
       <label class="title">详细地址</label>
-      <textarea class="textarea" placeholder="街道门牌信息"></textarea>
+      <textarea class="textarea" placeholder="街道门牌信息" v-model="address"></textarea>
     </div>
     <div class="row border-bottom">
       <label class="title">设置为默认地址</label>
       <div class="switch-container">
-        <input type="checkbox" id="user-switch">
+        <input type="checkbox" id="user-switch" v-model="isDefult">
         <label for="user-switch"></label>
       </div>
     </div>
+    <div class="login-btn">
+        <div class="submit" @click="saveAddress">提交</div>
+      </div>
   </div>
   <div class="choose-region" v-if="showChooseAddress">
     <div class="mask" @click="showChooseAddress=false"></div>
@@ -41,9 +44,10 @@
 <script>
 import VDistpicker from 'v-distpicker'
 import CommonHeader from '@/components/Header'
-// import {Token} from "@/utils/token"
-// const USER_TOKEN = Token.getToken()
-// const MAX_ADDRESS_NUM = 10
+import addressValidator from '@/validate/address'
+import {validate} from '@/utils/function'
+import {Token} from "@/utils/token"
+const USER_TOKEN = Token.getToken()
 
 export default {
   components: {
@@ -52,7 +56,7 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.backUrl = from.path
+      vm.backUrl = to.query.url || from.path
     })
   },
   data () {
@@ -60,7 +64,10 @@ export default {
       backUrl: '',
       showChooseAddress: false,
       region: [],
-      address: ''
+      name: '',
+      phone: '',
+      address: '',
+      isDefult: false
     }
   },
   computed: {
@@ -76,6 +83,40 @@ export default {
     
   },
   methods: {
+    saveAddress () {
+      const data = {
+        name: this.name,
+        phone: this.phone,
+        province: this.region[0] || '',
+        city: this.region[1] || '',
+        area: this.region[2] || '',
+        address: this.address,
+        is_defalut: this.isDefult ? 1 : 0
+      }
+      
+      const res = validate(data, addressValidator)
+      if (res.error !== 0) {
+        this.$showToast({
+          message: res.message
+        })
+        return
+      }
+      this.$showLoading()
+      this.axios.post('shose/address/add', data, {
+        headers: {
+          token: USER_TOKEN
+        }
+      }).then((res) => {
+        const addressId = res.address_id
+        this.$router.push(this.backUrl+'?selectAddressId='+addressId)
+      }).catch (err => {
+        this.$showToast({
+          message: err.message
+        })
+      }).finally(()=>{
+        this.$hideLoading()
+      })
+    },
     selectAddress (data) {
       this.region = [
         data.province.value,
@@ -83,7 +124,6 @@ export default {
         data.area.value
       ]
       this.showChooseAddress = false
-      console.log('selectAddress', data)
     }
   }
 }
@@ -126,6 +166,24 @@ export default {
         @include layout-flex($justify: space-between);
         color: $color-e;
       }
+    }
+  }
+  .login-btn{
+    width: 100%;
+    height: 1rem;
+    margin-top: .4rem;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    .submit{
+      width: 100%;
+      height: 100%;
+      background: $color-a;
+      color: #fff;
+      font-size: .32rem;
+      border-radius: .1rem;
+      line-height: 1rem;
+      text-align: center;
+      letter-spacing: .1rem;
     }
   }
   .choose-region{

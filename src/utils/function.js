@@ -28,7 +28,20 @@ function dateFormat(fmt, date) {
   return fmt;
 }
 
+const validate = function (data, validateObject) {
+  for(let key in data) {
+    if (Reflect.has(validateObject, key)) {
+      const res = validateObject[key](data[key], data.password)
+      if (res.error !== 0) {
+        return res
+      }
+    }
+  }
+  return {error: 0}
+}
+
 export {
   formatPrice,
-  dateFormat
+  dateFormat,
+  validate
 }
