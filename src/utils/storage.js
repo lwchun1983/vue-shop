@@ -17,6 +17,20 @@ class Storage {
     storage[name] = value
     Storage.setStorage(storage)
   }
+  // static addItem (name, value) {
+  //   const storage = Storage.getStorage()
+  //   if (storage[name] == null) {
+  //     storage[name] = value
+  //   } else {
+  //     if (typeof storage[name] === 'object') {
+  //       storage[name] = Object.assign(storage[name], value)
+  //     } else {
+  //       storage[name] = value
+  //     }
+  //   }
+  //   Storage.setStorage(storage)
+  // }
+
   static getStorage () {
     return JSON.parse(sessionStorage.getItem(STORAGE_NAME) || '{}')
   }

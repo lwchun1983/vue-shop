@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import loginValidator from '@/validate/login'
+import {validate} from '@/utils/function'
 import CommonHeader from '@/components/Header'
 import {Token} from '@/utils/token'
 export default {
@@ -36,27 +38,7 @@ export default {
       backUrl: '',
       username: '',
       password: '',
-      loginRedirect: '',
-      formDataValidator: {
-        username (val) {
-          if (val === '') {
-            return {error: 1, message: '账号为空'}
-          }
-          if (val.length < 3) {
-            return {error: 1, message: '账号长度小于3'}
-          }
-          return {error: 0}
-        },
-        password (val) {
-          if (val === '') {
-            return {error: 1, message: '密码为空'}
-          }
-          if (val.length < 6) {
-            return {error: 1, message: '密码长度小于6'}
-          }
-          return {error: 0}
-        }
-      }
+      loginRedirect: ''
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -80,8 +62,11 @@ export default {
         username: this.username,
         password: this.password
       }
-      const validate = this.validate(data)
-      if (!validate) {
+      const res = validate(data, loginValidator)
+      if (res.error !== 0) {
+        this.$showToast({
+          message: res.message
+        })
         return
       }
       this.axios.post('shose/user/login', data).then(res => {
@@ -90,20 +75,10 @@ export default {
         // 跳转页面
         this.$router.push(this.loginRedirect)
       }).catch(err => {
-        this.$showToast(err.message)
+        this.$showToast({
+          message: err.message
+        })
       })
-    },
-    validate (data) {
-      for(let key in data) {
-        if (Reflect.has(this.formDataValidator, key)) {
-          const res = this.formDataValidator[key](data[key], data.password)
-          if (res.error !== 0) {
-            this.$showToast(res.message)
-            return false
-          }
-        }
-      }
-      return true
     }
   }
 }

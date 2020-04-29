@@ -121,7 +121,6 @@ export default {
           cart.push(item)
         }
       })
-      console.log(cart)
       if (cart.length === 0) {
         this.$showToast({
           message: '至少选择一个商品',
@@ -146,22 +145,24 @@ export default {
         }
       })
       this.address = address || {}
-    
       Storage.setItem('address', this.address)
     },
     async getUserCoupon () {
+      const userCoupon = Storage.getItem('userCoupon') || []
+      if (userCoupon.length > 0) {
+        this.coupon = userCoupon.filter(item => item.is_use === 0 && item.expires_time*1000 > Date.now())
+        return
+      }
       const coupon = await this.axios.get('shose/coupon/get', {
         headers: {
           token: USER_TOKEN
         }
-      }).then(res => res.coupon)
-
-      this.coupon = coupon.map(item => {
-        if (item.is_use === 0 && item.expires_time*1000 > Date.now()) {
-          item.selected = false
-          return item
-        }
-      })
+      }).then(res => res.coupon.map(item => {
+        item.selected = false
+        return item
+      }))
+      this.coupon = coupon.filter(item => item.is_use === 0 && item.expires_time*1000 > Date.now())
+      Storage.setItem('userCoupon', this.coupon)
     }
   }
 }

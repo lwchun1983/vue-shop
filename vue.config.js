@@ -8,7 +8,7 @@ module.exports = {
     port: 8090,
     proxy: {
       '/api': {
-        target: 'http://api.2yue.cc/index.php/',
+        target: 'http://www.api.com/index.php/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

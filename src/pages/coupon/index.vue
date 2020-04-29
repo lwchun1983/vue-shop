@@ -25,6 +25,7 @@
 <script>
 import CommonHeader from "@/components/Header"
 import {Token} from "@/utils/token"
+import {Storage} from "@/utils/storage"
 import {filters} from "@/utils/mixins"
 import {dateFormat, formatPrice} from "@/utils/function"
 const USER_TOKEN = Token.getToken()
@@ -88,7 +89,9 @@ export default {
       if (index > -1) {
         const coupon = this.couponList[index]
         if (coupon.points > 0 && coupon.points > this.points) {
-          this.$showToast('积分不足')
+          this.$showToast({
+            message: '积分不足'
+          })
           return
         }
         this.$showLoading()
@@ -99,9 +102,14 @@ export default {
             token: USER_TOKEN
           }
         }).then(() => {
-          this.$showToast('兑换成功')
+          this.$showToast({
+            message: '兑换成功'
+          })
+          Storage.deleteItem('userCoupon')
         }).catch(err => {
-          this.$showToast(err.message || '兑换失败')
+          this.$showToast({
+            message: err.message || '兑换失败'
+          })
         }).finally(() => {
           this.$hideLoading()
         })

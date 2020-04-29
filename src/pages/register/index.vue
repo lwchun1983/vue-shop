@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import registerValidator from '@/validate/register'
+import {validate} from '@/utils/function'
 import CommonHeader from '@/components/Header'
 export default {
   components: {
@@ -45,45 +47,7 @@ export default {
       password: '',
       confirmPwd: '',
       nickname: '',
-      loginRedirect: '',
-      formDataValidator: {
-        username (val) {
-          if (val === '') {
-            return {error: 1, message: '账号为空'}
-          }
-          if (val.length < 3) {
-            return {error: 1, message: '账号长度小于3'}
-          }
-          return {error: 0}
-        },
-        password (val) {
-          if (val === '') {
-            return {error: 1, message: '密码为空'}
-          }
-          if (val.length < 6) {
-            return {error: 1, message: '密码长度小于6'}
-          }
-          return {error: 0}
-        },
-        confirmPwd (val, password) {
-          if (val === '') {
-            return {error: 1, message: '确认密码为空'}
-          }
-          if (val !== password) {
-            return {error: 1, message: '两次密码不一致'}
-          }
-          return {error: 0}
-        },
-        nickname (val) {
-          if (val === '') {
-            return {error: 1, message: '昵称为空'}
-          }
-          if (val.length < 2) {
-            return {error: 1, message: '昵称长度小于2'}
-          }
-          return {error: 0}
-        },
-      }
+      loginRedirect: ''
     }
   },
   mounted () {
@@ -99,8 +63,11 @@ export default {
         confirmPwd: this.confirmPwd,
         nickname: this.nickname
       }
-      const validate = this.validate(data)
-      if (!validate) {
+      const res = validate(data, registerValidator)
+      if (res.error !== 0) {
+        this.$showToast({
+          message: res.message
+        })
         return
       }
       this.axios.post('shose/user/register', data).then(() => {
@@ -110,20 +77,6 @@ export default {
           message: err.message
         })
       }) 
-    },
-    validate (data) {
-      for(let key in data) {
-        if (Reflect.has(this.formDataValidator, key)) {
-          const res = this.formDataValidator[key](data[key], data.password)
-          if (res.error !== 0) {
-            this.$showToast({
-              message: res.message
-            })
-            return false
-          }
-        }
-      }
-      return true
     }
   }
 }

@@ -48,7 +48,7 @@ import addressValidator from '@/validate/address'
 import {validate} from '@/utils/function'
 import {Token} from "@/utils/token"
 const USER_TOKEN = Token.getToken()
-
+console.log('USER_TOKEN', USER_TOKEN)
 export default {
   components: {
     CommonHeader,
