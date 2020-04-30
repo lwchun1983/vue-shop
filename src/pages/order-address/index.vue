@@ -22,6 +22,7 @@
 <script>
 import CommonHeader from '@/components/Header'
 import {Token} from "@/utils/token"
+import {Storage} from "@/utils/storage"
 const USER_TOKEN = Token.getToken()
 const MAX_ADDRESS_NUM = 10
 
@@ -48,7 +49,11 @@ export default {
   },
   methods: {
     chooseAddress (selectAddressId) {
-      this.$router.push('/order?selectAddressId='+selectAddressId)
+      const index = this.address.findIndex(item => item.id === selectAddressId)
+      if (index > -1) {
+        Storage.setItem('address', this.address[index])
+        this.$router.push('/order')
+      }
     },
     async getUserAddress () {
       this.address = await this.axios.get('shose/address', {
@@ -60,7 +65,6 @@ export default {
           item.selected = item.id === this.addressId
           return item
         }))
-      console.log(this.address)
       this.showAddAddress = (MAX_ADDRESS_NUM - this.address.length) > 0
     }
   }

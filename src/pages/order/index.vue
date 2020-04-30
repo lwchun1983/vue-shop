@@ -22,7 +22,11 @@
     </div>
   </div>
   <div class="order-submit border-top">
-    共{{cartNum}}件商品，合计: {{actualPayment}}
+    <div class="order-count">
+      共{{cartNum}}件商品，
+      <span class="order-total">合计: <em>￥{{actualPayment.toFixed(2)}}</em></span>
+    </div>
+    <button class="order-btn" @click="submitOrder">提交订单</button>
   </div>
 </div>
 </template>
@@ -51,45 +55,16 @@ export default {
       actualPayment: 0
     }
   },
-  // watch: {
-  //   async addressId () {
-  //     this.$showLoading()
-  //     await this.getUserAddress()
-  //     this.$hideLoading()
-  //   }
-  // },
   async mounted () {
     this.addressId = this.$route.query.selectAddressId || 0
     this.initCart()
-    try {
-      this.$showLoading()
-      // const address = Storage.getItem('address') || {}
-      // if (Object.keys(address).length === 0) {
-      //   await this.getUserAddress()
-      // } else {
-      //   if (this.addressId === address.id) {
-      //     this.address = address
-      //   } else {
-      //     await this.getUserAddress()
-      //   }
-      // }
-      await this.getUserAddress()
-      await this.getUserCoupon()
-    } catch (err) {
-      console.log(err)
-    } finally {
+    this.$showLoading()
+    Promise.all([this.getUserAddress(), this.getUserCoupon()]).finally(() => {
       this.$hideLoading()
-    }
-    // Promise.all([this.getUserAddress(), this.getUserCoupon()]).finally(() => {
-    //   this.$hideLoading()
-    // })  
+    })  
   },
   methods: {
     chooseCoupon (couponId) {
-      // const index = this.coupon.findIndex(item => item.id === couponId)
-      // if (index > -1) {
-      //   this.coupon[index].selected = !this.coupon[index].selected
-      // }
       if (this.selectCouponId != 0 && this.selectCouponId !== couponId) {
         this.actualPayment = this.total
       }
@@ -136,6 +111,11 @@ export default {
       this.actualPayment = total
     },
     async getUserAddress () {
+      const userAddress = Storage.getItem('address') || {}
+      if (Object.keys(userAddress).length > 0) {
+        this.address = userAddress
+        return
+      }
       const address = await this.axios.get('shose/address/default', {
         headers: {
           token: USER_TOKEN
@@ -163,6 +143,74 @@ export default {
       }))
       this.coupon = coupon.filter(item => item.is_use === 0 && item.expires_time*1000 > Date.now())
       Storage.setItem('userCoupon', this.coupon)
+    },
+    async submitOrder () {
+      const token = Token.getToken()
+      if (token === '') {
+        this.$router.push('/login?url=' + encodeURIComponent('/order'))
+        return
+      }
+      const address = Storage.getItem('address') || {}
+      if (Object.keys(address).length === 0) {
+        this.$showToast({
+          message: '请选择收货地址'
+        })
+        return
+      }
+      if (this.cart.length === 0) {
+        this.$showToast({
+          message: '请选择商品'
+        })
+        return
+      }
+      const data = {}
+      data.address_id = parseInt(address.id)
+      data.goods = []
+      this.cart.forEach(item => {
+        data.goods.push({
+          goods_id: item.id,
+          count: item.buyNumber
+        })
+      })
+      if (this.coupon.length > 0) {
+        const selectCoupon = this.coupon.filter(item => item.selected)
+        if (selectCoupon.length > 0) {
+          data.coupon_id = selectCoupon[0].id
+        }
+      }
+      try {
+        this.$showLoading()
+        const res = await this.axios.post('shose/order', data, {
+          headers: {
+            token
+          }
+        })
+        if (res.pass) {
+          // 删除购物车中购买成功的商品
+          const cartAll = Storage.getItem('cart')
+          const cart = cartAll.filter(item => {
+            const index = this.cart.findIndex(val => item.id === val.id)
+            return index === -1
+          })
+          if (cart.length > 0) {
+            Storage.setItem('cart', cart)
+          } else {
+            Storage.deleteItem('cart')
+          }
+          // 清空优惠券信息
+          Storage.deleteItem('userCoupon')
+          this.$router.replace('/order/pay?id=' + res.order_id)
+        }
+      } catch (error) {
+        this.$showToast({
+          message: error.message,
+          callback: () => {
+            this.$router.replace('/cart')
+          }
+        })
+      }finally {
+        this.$hideLoading()
+      }
     }
   }
 }
@@ -241,7 +289,32 @@ export default {
     bottom: 0;
     background: #ffffff;
     @include layout-flex;
-    font-size: .36rem;
+    .order-count{
+      width: 0;
+      flex: 1;
+      height: 100%;
+      font-size: .24rem;
+      color: $color-e;
+      @include layout-flex($justify: flex-end);
+      .order-total{
+        font-size: .32rem;
+        color: $color-b;
+        em{
+          font-size: .36rem;
+          color: $color-a;
+        }
+      }
+    }
+    .order-btn{
+      width: 1.8rem;
+      height: .6rem;
+      background: $color-a;
+      color: #ffffff;
+      border-radius: .3rem;
+      border: none;
+      margin: 0 .2rem;
+      font-size: .3rem;
+    }
   }
 }
 </style>

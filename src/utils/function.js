@@ -1,3 +1,4 @@
+import {config} from '../config/config'
 const formatPrice = function (price) {
   // 123.00 => 123  123.10 => 123.1   123.12 => 123.12
   const arr = price.toString().split('.')
@@ -40,8 +41,13 @@ const validate = function (data, validateObject) {
   return {error: 0}
 }
 
+const getOrderStatus = function (status) {
+  const {order: {status: statusOptions}} = config
+  return statusOptions[status] || ''
+}
 export {
   formatPrice,
   dateFormat,
-  validate
+  validate,
+  getOrderStatus
 }
