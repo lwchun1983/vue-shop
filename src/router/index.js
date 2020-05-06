@@ -154,11 +154,14 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-  linkExactActiveClass: "active"
+  linkExactActiveClass: "active",
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  }
 });
 
 // 需要做登录验证的路由名称
-const AUTH_ROUTER_NAME = ['Coupon', 'Order', 'UserAddress', 'AddAddress', 'OrderAddress', 'OrderPay']
+const AUTH_ROUTER_NAME = ['Coupon', 'Order', 'User', 'UserAddress', 'AddAddress', 'OrderAddress', 'OrderPay']
 // 登录验证
 router.beforeEach((to, from, next) => {
   if (AUTH_ROUTER_NAME.includes(to.name)) {
