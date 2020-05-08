@@ -11,7 +11,7 @@
         <div class="nickname" @click="$router.push('/user/info')">{{user.nickname}}<span class="level">lv{{user.level}}</span></div>
         <div>积分：<span class="points">{{user.points}}</span></div>
       </div>
-      <div class="user-sign iconfont">&#xe60b; 签到</div>
+      <div class="user-sign iconfont" @click="$router.push('/user/sign')">&#xe60b; 签到</div>
     </div>
     <div class="order-menu-wrapper">
       <div class="order-menu">

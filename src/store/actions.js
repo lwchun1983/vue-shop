@@ -8,7 +8,6 @@ export default {
           token
         }
       })
-      console.log(user)
       commit('setUser', user)
     }
   }

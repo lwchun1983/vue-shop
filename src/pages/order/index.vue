@@ -125,7 +125,6 @@ export default {
           id: this.addressId
         }
       })
-      console.log(address)
       this.address = address || {}
       Storage.setItem('address', this.address)
     },
