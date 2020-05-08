@@ -8,7 +8,7 @@
         <input type="file" accept="image/*" @change="chooseAvatr">
       </div>
       <div class="user">
-        <div class="nickname">{{user.nickname}}<span class="level">lv{{user.level}}</span></div>
+        <div class="nickname" @click="$router.push('/user/info')">{{user.nickname}}<span class="level">lv{{user.level}}</span></div>
         <div>积分：<span class="points">{{user.points}}</span></div>
       </div>
       <div class="user-sign iconfont">&#xe60b; 签到</div>
@@ -16,7 +16,7 @@
     <div class="order-menu-wrapper">
       <div class="order-menu">
         <div class="title">
-          我的订单
+          我的订单{{$store.state.a}}
           <router-link to="/user" class="iconfont">查看更多 &#xe637;</router-link>
         </div>
         <div class="menu-list">
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import {mapState,mapActions} from 'vuex'
 import CommonHeader from '@/components/Header'
 import CommonFooter from '@/components/Footer'
 import {Token} from '@/utils/token'
@@ -94,22 +95,16 @@ export default {
   },
   data () {
     return {
-      user: {}
     }
   },
+  computed: {
+    ...mapState(['user'])
+  },
   mounted () {
-    this.getUser()
+    this.getUser(this.axios)
   },
   methods: {
-    async getUser () {
-      const token = Token.getToken()
-      const user = await this.axios.get('api/user', {
-        headers: {
-          token
-        }
-      })
-      this.user = user
-    },
+    ...mapActions(['getUser']),
     chooseAvatr (e) {
       if (e.target.files.length > 0) {
         const file = e.target.files[0]

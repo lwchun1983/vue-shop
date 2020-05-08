@@ -6,6 +6,7 @@ import Vue from "vue";
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueLazyload from 'vue-lazyload'
+import AwesomePicker from 'vue-awesome-picker'
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -31,6 +32,7 @@ axios.interceptors.response.use(function (response) {
 })
 Vue.use(VueAxios, axios)
 
+Vue.use(AwesomePicker)
 // 图片懒加载
 Vue.use(VueLazyload, {
   loading: '/images/loading-svg/loading-bars.svg'

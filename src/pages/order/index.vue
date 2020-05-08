@@ -36,7 +36,7 @@ import CommonHeader from '@/components/Header'
 import OrderAddress from './Address'
 import {Token} from "@/utils/token"
 import {Storage} from "@/utils/storage"
-const USER_TOKEN = Token.getToken()
+
 export default {
   components: {
     CommonHeader,
@@ -116,14 +116,16 @@ export default {
         this.address = userAddress
         return
       }
+      const  token = Token.getToken()
       const address = await this.axios.get('shose/address/default', {
         headers: {
-          token: USER_TOKEN
+          token
         },
         params: {
           id: this.addressId
         }
       })
+      console.log(address)
       this.address = address || {}
       Storage.setItem('address', this.address)
     },
@@ -133,9 +135,10 @@ export default {
         this.coupon = userCoupon.filter(item => item.is_use === 0 && item.expires_time*1000 > Date.now())
         return
       }
+      const  token = Token.getToken()
       const coupon = await this.axios.get('shose/coupon/get', {
         headers: {
-          token: USER_TOKEN
+          token
         }
       }).then(res => res.coupon.map(item => {
         item.selected = false
