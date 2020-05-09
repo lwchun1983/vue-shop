@@ -92,7 +92,7 @@ export default {
     this.getGoods()
     this.initScroll()
     this.initCollect()
-    this.setHistory()
+    this.setHistory() 
   },
   methods: {
     async initCollect () {
