@@ -1,5 +1,5 @@
 <template>
-<div class="page">
+<div class="page" ref="page">
   <common-header title="我的"></common-header>
   <div class="user-container">
     <div class="user-wrapper">
@@ -52,7 +52,7 @@
         <div class="navigate-text">我的收藏</div>
         <span class="iconfont">&#xe637;</span>
       </div>
-      <div class="navigate-cell border-bottom">
+      <div class="navigate-cell border-bottom" @click="$router.push('/user/address')">
         <span class="iconfont icon">&#xe606;</span>
         <div class="navigate-text">我的地址</div>
         <span class="iconfont">&#xe637;</span>
@@ -62,7 +62,7 @@
         <div class="navigate-text">我的足迹</div>
         <span class="iconfont">&#xe637;</span>
       </div>
-      <div class="navigate-cell border-bottom">
+      <div class="navigate-cell border-bottom" @click="$router.push('/user/coupon')">
         <span class="iconfont icon">&#xe605;</span>
         <div class="navigate-text">我的卡券</div>
         <span class="iconfont">&#xe637;</span>
@@ -101,6 +101,8 @@ export default {
     ...mapState(['user'])
   },
   mounted () {
+    let bodyHeight = document.documentElement.offsetHeight
+    this.$refs.page.style.height = bodyHeight + 'px'
     this.getUser(this.axios)
   },
   methods: {
@@ -150,7 +152,8 @@ export default {
 @import "~@/assets/scss/global";
 .page{
   width: 100%;
-  margin-top: $header-h;
+  padding-top: $header-h;
+  box-sizing: border-box;
   .user-container{
     width: 100%;
     height: 3.86rem;

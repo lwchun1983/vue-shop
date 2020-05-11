@@ -1,5 +1,5 @@
 <template>
-<div class="page">
+<div class="page" ref="page">
   <common-header title="我的足迹" back="/user"></common-header>
   <div class="history-time-container">
     <div class="history-time">
@@ -81,6 +81,8 @@ export default {
     }
   },
   mounted () {
+    let bodyHeight = document.documentElement.offsetHeight
+    this.$refs.page.style.height = bodyHeight + 'px'
     this.getHistoryTime()
   },
   methods: {
@@ -142,9 +144,9 @@ export default {
 @import "~@/assets/scss/global";
 .page{
   width: 100%;
-  margin-top: $header-h;
+  padding-top: $header-h;
   background: $color-c;
-  height: 300px;
+  box-sizing: border-box;
   .history-time-container{
     width: 100%;
     height: 1.3rem;

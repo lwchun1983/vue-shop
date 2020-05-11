@@ -14,11 +14,13 @@ import User from "../pages/user/index";
 import UserAddress from "../pages/user-address/index";
 import UserInfo from "../pages/user-info/index";
 import UserSign from "../pages/user-sign/index";
+import UserCoupon from "../pages/user-coupon/index";
 import UserFootprint from "../pages/user-footprint/index";
 import AddAddress from "../pages/add-address/index";
 import OrderAddress from "../pages/order-address/index";
 import OrderPay from "../pages/order-pay/index";
 import {Token} from "../utils/token"
+import config from './config'
 
 Vue.use(VueRouter);
 
@@ -154,6 +156,11 @@ const routes = [
     component: AddAddress
   },
   {
+    path: '/user/coupon',
+    name: 'UserCoupon',
+    component: UserCoupon
+  },
+  {
     path: '/order/pay',
     beforeEnter (to, from, next) {
       const id = to.query.id
@@ -178,24 +185,17 @@ const router = new VueRouter({
   }
 });
 
-// 需要做登录验证的路由名称
-const AUTH_ROUTER_NAME = ['Coupon', 'Order', 'User', 'UserInfo', 'UserSign', 'UserAddress', 'UserFootprint', 'AddAddress', 'OrderAddress', 'OrderPay']
 // 登录验证
 router.beforeEach((to, from, next) => {
-  if (AUTH_ROUTER_NAME.includes(to.name)) {
+  if (Array.isArray(config.authRoute) && config.authRoute.includes(to.name)) {
     const token = Token.getToken()
     if (token === '') {
-      console.log(from)
-      console.log(to)
       let url
       if (to.query.loginRedirect) {
-        console.log(1, to.query.loginRedirect)
         url = decodeURIComponent(to.query.loginRedirect)
       } else {
-        console.log(2)
         url = encodeURIComponent(to.path)
       }
-      console.log('url', url)
       next(`/login?url=${url}`)
     } else {
       next()

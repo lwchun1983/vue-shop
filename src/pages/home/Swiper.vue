@@ -40,6 +40,21 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    // const arr = [1,22,11,8,10,16,7,29,17]
+    // const len = arr.length
+    // let tmp
+    // for(let i=0; i<len;i++) {
+    //   for (let j=i+1;j<len;j++) {
+    //     if (arr[i] < arr[j]) {
+    //       tmp = arr[i]
+    //       arr[i] = arr[j]
+    //       arr[j] = tmp
+    //     }
+    //   }
+    // }
+    // console.log(arr)
   }
 }
 </script>
