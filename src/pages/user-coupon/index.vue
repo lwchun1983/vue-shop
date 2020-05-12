@@ -67,7 +67,6 @@ export default {
         item.endTime = dateFormat('YYYY.mm.dd', new Date(item.expires_time * 1000))
         return item
       })
-      console.log(this.coupon)
     }
   }
 }

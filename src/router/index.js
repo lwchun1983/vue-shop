@@ -10,6 +10,8 @@ import Login from "../pages/login/index";
 import Register from "../pages/register/index";
 import Coupon from "../pages/coupon/index";
 import Order from "../pages/order/index";
+import Search from "../pages/search/index";
+import SearchList from "../pages/search-list/index";
 import User from "../pages/user/index";
 import UserAddress from "../pages/user-address/index";
 import UserInfo from "../pages/user-info/index";
@@ -39,6 +41,16 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: Cart
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search
+  },
+  {
+    path: "/searchlist",
+    name: "SearchList",
+    component: SearchList
   },
   {
     path: "/goods-list",

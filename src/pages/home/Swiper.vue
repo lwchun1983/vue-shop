@@ -42,7 +42,7 @@ export default {
     }
   },
   mounted () {
-    // const arr = [1,22,11,8,10,16,7,29,17]
+    // let arr = [1,22,11,8,10,16,10,7,29,17]
     // const len = arr.length
     // let tmp
     // for(let i=0; i<len;i++) {
@@ -54,7 +54,28 @@ export default {
     //     }
     //   }
     // }
+    // arr = this.sort(arr)
     // console.log(arr)
+  },
+  methods: {
+    sort(arr) {
+      if (arr.length <= 1) {
+        //递归出口
+        return arr
+      }
+      let middleIndex = Math.floor(arr.length / 2)
+      let middle = arr.splice(middleIndex, 1)[0]
+      let left = []
+      let right = []
+      for(let i = 0;i < arr.length; i++){
+        if(arr[i] < middle){
+          left.push(arr[i])
+        }else{
+          right.push(arr[i])
+        }
+      }
+      return this.sort(left).concat([middle], this.sort(right))
+    }
   }
 }
 </script>

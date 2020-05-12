@@ -3,7 +3,7 @@
  * @Author: 278096437@qq.com 李万春
  -->
 <template>
-<div class="container">
+<div class="container" @click="$router.push('/search')">
   <div class="search">
     <span class="iconfont">&#xe691;</span>
     {{placeHolder}}
