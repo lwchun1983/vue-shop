@@ -48,7 +48,7 @@
   </div>
   <div class="operation">
     <span class="operation-btn" v-if="order.status <= 1">支付订单</span>
-    <span class="operation-btn" v-else>查看订单</span>
+    <span class="operation-btn" v-else @click="$router.push('/order-detail/' + order.id)">查看订单</span>
     <router-link to="/" class="operation-btn">返回首页</router-link>
   </div>
 </div>

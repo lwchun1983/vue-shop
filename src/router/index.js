@@ -16,10 +16,12 @@ import User from "../pages/user/index";
 import UserAddress from "../pages/user-address/index";
 import UserInfo from "../pages/user-info/index";
 import UserSign from "../pages/user-sign/index";
+import UserOrder from "../pages/user-order/index";
 import UserCoupon from "../pages/user-coupon/index";
 import UserFootprint from "../pages/user-footprint/index";
 import AddAddress from "../pages/add-address/index";
 import OrderAddress from "../pages/order-address/index";
+import OrderDetail from "../pages/order-detail/index";
 import OrderPay from "../pages/order-pay/index";
 import {Token} from "../utils/token"
 import config from './config'
@@ -111,6 +113,24 @@ const routes = [
     component: GoodsDetail
   },
   {
+    path: "/order-detail/:id",
+    beforeEnter (to, from, next) {
+      const id = to.params.id
+      if (!/^\d+$/.test(id)) {
+        next(from.path)
+      } else {
+        next()
+      }
+    },
+    props: route => {
+      return {
+        id: parseInt(route.params.id)
+      }
+    },
+    name: "OrderDetail",
+    component: OrderDetail
+  },
+  {
     path: '/order',
     name: 'Order',
     component: Order
@@ -146,6 +166,11 @@ const routes = [
     path: '/user/sign',
     name: 'UserSign',
     component: UserSign,
+  },
+  {
+    path: '/user/order',
+    name: 'UserOrder',
+    component: UserOrder
   },
   {
     path: '/user/footprint',

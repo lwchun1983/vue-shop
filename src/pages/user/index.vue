@@ -17,22 +17,22 @@
       <div class="order-menu">
         <div class="title">
           我的订单{{$store.state.a}}
-          <router-link to="/user" class="iconfont">查看更多 &#xe637;</router-link>
+          <span @click="toUserOrder()" class="iconfont">查看更多 &#xe637;</span>
         </div>
         <div class="menu-list">
-          <div class="menu-cell">
+          <div class="menu-cell" @click="toUserOrder(1)">
             <span class="iconfont">&#xe607;</span>
             待付款
           </div>
-          <div class="menu-cell">
+          <div class="menu-cell" @click="toUserOrder(2)">
             <span class="iconfont">&#xe614;</span>
             待发货
           </div>
-          <div class="menu-cell">
+          <div class="menu-cell" @click="toUserOrder(3)">
             <span class="iconfont">&#xe608;</span>
             待收货
           </div>
-          <div class="menu-cell">
+          <div class="menu-cell"  @click="toUserOrder(4)">
             <span class="iconfont">&#xe66b;</span>
             已完成
           </div>
@@ -107,6 +107,9 @@ export default {
   },
   methods: {
     ...mapActions(['getUser']),
+    toUserOrder (status = -1) {
+      this.$router.push('/user/order?status=' + status)
+    },
     chooseAvatr (e) {
       if (e.target.files.length > 0) {
         const file = e.target.files[0]
