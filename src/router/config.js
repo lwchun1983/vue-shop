@@ -8,6 +8,8 @@ const AUTH_ROUTE_NAME = [
   'UserSign',
   'UserAddress',
   'UserFootprint',
+  'UserCollect',
+  'UserNotice',
   'AddAddress',
   'OrderAddress',
   'OrderDetail',

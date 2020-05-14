@@ -42,12 +42,12 @@
   </div>
   <div class="navigate-wrapper">
     <div class="navigate">
-      <div class="navigate-cell border-bottom">
+      <div class="navigate-cell border-bottom" @click="$router.push('/user/notice')">
         <span class="iconfont icon">&#xe600;</span>
         <div class="navigate-text">我的消息</div>
         <span class="iconfont">&#xe637;</span>
       </div>
-      <div class="navigate-cell border-bottom">
+      <div class="navigate-cell border-bottom" @click="$router.push('/user/collect')">
         <span class="iconfont icon">&#xe680;</span>
         <div class="navigate-text">我的收藏</div>
         <span class="iconfont">&#xe637;</span>

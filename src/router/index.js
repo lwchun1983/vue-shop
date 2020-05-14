@@ -17,7 +17,9 @@ import UserAddress from "../pages/user-address/index";
 import UserInfo from "../pages/user-info/index";
 import UserSign from "../pages/user-sign/index";
 import UserOrder from "../pages/user-order/index";
+import UserCollect from "../pages/user-collect/index";
 import UserCoupon from "../pages/user-coupon/index";
+import UserNotice from "../pages/user-notice/index";
 import UserFootprint from "../pages/user-footprint/index";
 import AddAddress from "../pages/add-address/index";
 import OrderAddress from "../pages/order-address/index";
@@ -173,6 +175,16 @@ const routes = [
     component: UserOrder
   },
   {
+    path: '/user/collect',
+    name: 'UserCollect',
+    component: UserCollect
+  },
+  {
+    path: '/user/notice',
+    name: 'UserNotice',
+    component: UserNotice
+  },
+  {
     path: '/user/footprint',
     name: 'UserFootprint',
     component: UserFootprint
@@ -231,7 +243,7 @@ router.beforeEach((to, from, next) => {
       if (to.query.loginRedirect) {
         url = decodeURIComponent(to.query.loginRedirect)
       } else {
-        url = encodeURIComponent(to.path)
+        url = encodeURIComponent(to.fullPath)
       }
       next(`/login?url=${url}`)
     } else {

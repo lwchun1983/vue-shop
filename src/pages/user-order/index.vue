@@ -83,7 +83,6 @@ export default {
       this.page = 1
       this.totalPage = 0
       this.busy = false
-      this.loadMore()
     },
     async getUserOrders () {
       this.$showLoading()

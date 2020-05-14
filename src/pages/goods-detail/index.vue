@@ -32,17 +32,17 @@
         <span class="iconfont">&#xe603;</span>
         首页
       </div>
-      <div class="footer-cell">
+      <a :href="qqHref" target="_blank" class="footer-cell">
         <span class="iconfont">&#xe699;</span>
         客服
-      </div>
+      </a>
       <div class="footer-cell" :class="{collect: isCollect}" @click="collect">
         <span class="iconfont">{{isCollect?'&#xe604;':'&#xe680;'}}</span>
         {{isCollect?'已收藏':'收藏'}}
       </div>
     </div>
     <div class="footer-right">
-      <div class="buy">立即购买</div>
+      <div class="buy" @click="toBuy">立即购买</div>
       <div class="cart" @click="addToCart">加入购物车</div>
     </div>
   </div>
@@ -57,6 +57,7 @@ import DetailInfo from "./Info"
 import DetailComment from "./Comment"
 import {Token} from '@/utils/token'
 import {Storage} from '@/utils/storage'
+import {getConfig} from '@/utils/function'
 export default {
   props: {
     id: Number
@@ -85,10 +86,18 @@ export default {
         // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。如果没有设置该值，其默认值为 0，即不派发 scroll 事件。
         probeType: 3,
         scrollbar: false
-      }
+      },
+      qqHref: '',
     }
   },
   mounted () {
+    console.log(this.$store.state.buyCart)
+    const qqConfig = getConfig('qq')
+    if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent) || /(Android)/i.test(navigator.userAgent)) {
+      this.qqHref = qqConfig['mobileUrl'].replace('%s', qqConfig['kefu'])
+    } else {
+      this.qqHref = qqConfig['pcUrl'].replace('%s', qqConfig['kefu'])
+    }
     this.getGoods()
     this.initScroll()
     this.initCollect()
@@ -223,6 +232,22 @@ export default {
           }
         }
       })
+    },
+    toBuy () {
+      if (this.id === 0) {
+        return
+      }
+      const goods = this.goods
+      const cartData = {
+        id: goods.goods_id,
+        img: goods.goods_img,
+        name: goods.goods_name,
+        price: goods.goods_price,
+        selected: true,
+        buyNumber: 1
+      }
+      this.$store.dispatch('setBuyCart', cartData)
+      this.$router.push('/order?buy=1')
     }
   }
 }

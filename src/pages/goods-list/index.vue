@@ -64,7 +64,6 @@ export default {
       console.log('change sortField')
       this.sortField = sortField
       this.resetData()
-      this.loadMore()
     },
     resetData () {
       this.goodsList = []
@@ -87,7 +86,6 @@ export default {
           return
         }
         const res = await this.axios.get('api/category/cid', {params: {name: this.cname}})
-        console.log(res)
         if (res.parent) {
           this.pid = res.cat_id
         } else {
@@ -108,6 +106,7 @@ export default {
         }
       })
       this.$hideLoading()
+      console.log(this.goodsList)
       this.goodsList = this.goodsList.concat(goods)
       if (this.page === 1) {
         this.totalPage = Math.ceil(total / this.count)
