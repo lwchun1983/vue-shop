@@ -4,6 +4,9 @@
  -->
 <template>
   <div id="app">
+    <!-- <keep-alive exclude="goodsCategory">
+      <router-view />
+    </keep-alive> -->
     <router-view />
   </div>
 </template>

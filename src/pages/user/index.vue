@@ -67,12 +67,12 @@
         <div class="navigate-text">我的卡券</div>
         <span class="iconfont">&#xe637;</span>
       </div>
-      <div class="navigate-cell border-bottom">
+      <div class="navigate-cell border-bottom" @click="$router.push('/user/points')">
         <span class="iconfont icon">&#xe6a6;</span>
         <div class="navigate-text">我的积分</div>
         <span class="iconfont">&#xe637;</span>
       </div>
-      <div class="navigate-cell border-bottom">
+      <div class="navigate-cell border-bottom" @click="logout">
         <span class="iconfont icon">&#xe61d;</span>
         <div class="navigate-text">退出系统</div>
         <span class="iconfont">&#xe637;</span>
@@ -101,9 +101,16 @@ export default {
     ...mapState(['user'])
   },
   mounted () {
+    console.log('mounted')
     let bodyHeight = document.documentElement.offsetHeight
     this.$refs.page.style.height = bodyHeight + 'px'
     this.getUser(this.axios)
+  },
+  activated () {
+    console.log('activated')
+  },
+  deactivated () {
+    console.log('deactivated')
   },
   methods: {
     ...mapActions(['getUser']),
@@ -146,6 +153,10 @@ export default {
           this.$hideLoading()
         })
       }
+    },
+    logout () {
+      Token.deleteToken()
+      this.$router.replace('/')
     }
   }
 }

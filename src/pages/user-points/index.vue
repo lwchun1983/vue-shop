@@ -1,14 +1,30 @@
 <template>
 <div class="page">
-  <common-header title="我的消息" back="/user"></common-header>
+  <common-header title="我的积分" back="/user"></common-header>
+  <div class="tab border-bottom">
+    <div class="tab-wrapper">
+      <div class="tab-cell">
+        <span class="tab-text" :class="{active: status === -1}" @click="tabChange(-1)">全部</span>
+      </div>
+      <div class="tab-cell">
+        <span class="tab-text" :class="{active: status === 1}" @click="tabChange(1)">收入</span>
+      </div>
+      <div class="tab-cell">
+        <span class="tab-text" :class="{active: status === 2}" @click="tabChange(2)">支出</span>
+      </div>
+    </div>
+  </div>
   <div class="notice-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="scrollDistance">
     <div class="notice" v-for="item of list" :key="item.id">
-      <div class="notice-time">{{item.time|dateFmt}}</div>
+      <div class="notice-time">{{item.add_time|dateFmt}}</div>
       <div class="notice-body">
-        <div class="notice-title">{{item.title}}</div>
+        <div class="notice-title">{{item.type===1?'+':'-'}}{{item.points}}积分</div>
         <div class="notice-content">{{item.content}}</div>
       </div>
     </div>
+  </div>
+  <div class="empty-list" v-if="list.length === 0">
+    没有查询到结果
   </div>
 </div>
 </template>
@@ -32,6 +48,7 @@ export default {
   },
   data () {
     return {
+      status: -1,
       list: [],
       page: 1, // 为你推荐的页码
       count: 8, // 为你推荐每次获取的数量
@@ -41,13 +58,21 @@ export default {
     }
   },
   methods: {
+    tabChange (status) {
+      this.status = status
+      this.list = []
+      this.page = 1
+      this.totalPage = 0
+      this.busy = false
+    },
     async getUserCollect () {
       this.$showLoading()
       const token = Token.getToken()
-      const {list, total} = await this.axios.get('shose/notice',{
+      const {list, total} = await this.axios.get('shose/user/points',{
         params: {
           page: this.page,
-          count: this.count
+          count: this.count,
+          type: this.status
         },
         headers: {
           token
@@ -83,6 +108,34 @@ export default {
   padding-top: $header-h;
   box-sizing: border-box;
   background: #ffffff;
+  .tab{
+    width: 100%;
+    height: .8rem;
+    background: #ffffff;
+    .tab-wrapper{
+      width: 100%;
+      height: 100%;
+      padding: 0 .2rem;
+      box-sizing: border-box;
+      @include layout-flex;
+      .tab-cell{
+        width: 33.33%;
+        height: 100%;
+        @include layout-flex;
+        .tab-text{
+          height: 100%;
+          font-size: .32rem;
+          color: $color-b;
+          @include layout-flex;
+          border-bottom: 2px solid #ffffff;
+          box-sizing: border-box;
+          &.active{
+            border-bottom: 2px solid $color-a;
+          }
+        }
+      }
+    }
+  }
   .notice-list{
     width: 100%;
     padding: 0 .2rem;
@@ -117,6 +170,13 @@ export default {
         }
       }
     }
+  }
+  .empty-list{
+    width: 100%;
+    height: 1rem;
+    @include layout-flex;
+    font-size: .3rem;
+    color: $color-e;
   }
 }
 </style>

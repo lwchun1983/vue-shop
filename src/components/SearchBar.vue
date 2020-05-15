@@ -3,7 +3,7 @@
  * @Author: 278096437@qq.com 李万春
  -->
 <template>
-<div class="container" @click="$router.push('/search')">
+<div class="search-container" @click="$router.push('/search')">
   <div class="search">
     <span class="iconfont">&#xe691;</span>
     {{placeHolder}}
@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/global";
-.container{
+.search-container{
   width: 100%;
   height: $search-h;
   padding: .15rem .4rem;

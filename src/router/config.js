@@ -10,6 +10,7 @@ const AUTH_ROUTE_NAME = [
   'UserFootprint',
   'UserCollect',
   'UserNotice',
+  'UserPoints',
   'AddAddress',
   'OrderAddress',
   'OrderDetail',

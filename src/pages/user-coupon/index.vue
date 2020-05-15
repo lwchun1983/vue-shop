@@ -48,7 +48,7 @@ export default {
           token
         }
       }).then(res => res.coupon)
-      const statusOptions = ['', '优惠抵扣', '已经使用', '已经失效']
+      const statusOptions = ['', '优惠抵扣', '已经失效', '已经使用']
       this.coupon = coupon.map(item => {
         let status = 0
         if (item.is_use === 1) {
@@ -60,6 +60,7 @@ export default {
             status = 1
           }
         }
+        console.log(status)
         item.status = status
         item.couponMoney = parseInt(item.money)
         item.statusText = statusOptions[status] || ''
@@ -96,17 +97,17 @@ export default {
         }
       }
       &.coupon-bg2{
-        background: url('~@/assets/images/user-coupon-bg2.png');
-        background-size: contain;
-        .coupon-status{
-          color: #ff7c76;
-        }
-      }
-      &.coupon-bg3{
         background: url('~@/assets/images/user-coupon-bg3.png');
         background-size: contain;
         .coupon-status{
           color: #999999;
+        }
+      }
+      &.coupon-bg3{
+        background: url('~@/assets/images/user-coupon-bg2.png');
+        background-size: contain;
+        .coupon-status{
+          color: #ff7c76;
         }
       }
       .coupon-info{

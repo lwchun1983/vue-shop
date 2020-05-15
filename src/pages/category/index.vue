@@ -21,6 +21,7 @@ import SearchBar from '@/components/SearchBar'
 import Category from './Category'
 import SubCategory from './SubCategory'
 export default {
+  name: 'goodsCategory',
   components: {
     CommonHeader,
     CommonFooter,
