@@ -17,18 +17,25 @@
 //   html.style.fontSize = fontSize + 'px'
 // })
 
-(function(doc, win) {
-  var docEl = doc.documentElement,
-    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-    recalc = function() {
-      var clientWidth = docEl.clientWidth;
-      if (!clientWidth) return;
-      docEl.style.fontSize =  clientWidth / 7.5 + 'px';
-    };
-  if (!doc.addEventListener) return;
-  win.addEventListener(resizeEvt, recalc, false);
-  doc.addEventListener('DOMContentLoaded', recalc, false);
-})(document, window);
+function fn1 (doc, win) {
+  const docEl = doc.documentElement
+  const resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
+  const recalc = function() {
+      var clientWidth = docEl.clientWidth
+      if (!clientWidth) {
+        return
+      }
+      docEl.style.fontSize =  clientWidth / 7.5 + 'px'
+    }
+  if (!doc.addEventListener) {
+    return
+  }
+  win.addEventListener(resizeEvt, recalc, false)
+  doc.addEventListener('DOMContentLoaded', recalc, false)
+}
+
+fn1(document, window)
+
 
 export default {}
 </script>

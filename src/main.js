@@ -7,9 +7,10 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueLazyload from 'vue-lazyload'
 import AwesomePicker from 'vue-awesome-picker'
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+
+import App from "./App.vue"
+import router from "./router"
+import store from "./store"
 import Loading from './plugin/loading'
 import Modal from './plugin/modal'
 import Toast from './plugin/toast'
@@ -42,6 +43,7 @@ Vue.use(Loading)
 Vue.use(Modal)
 Vue.use(Toast)
 Vue.config.productionTip = false;
+// Vue.prototype.$message = Message
 
 new Vue({
   router,

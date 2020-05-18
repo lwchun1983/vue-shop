@@ -16,7 +16,7 @@
       <span class="iconfont">&#xe642;</span>
     </div>
   </div>
-  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="scrollDistance">
+  <div v-infinite-scroll="loadMore" :infinite-scroll-immediate-check="true" infinite-scroll-disabled="busy" infinite-scroll-distance="scrollDistance">
     <list :list="goodsList"></list>
   </div>
 </div>
@@ -57,19 +57,23 @@ export default {
     })
   },
   mounted () {
+    // document.querySelector('.page').style.minHeight = document.documentElement.offsetHeight + 'px'
+    // document.body.scrollTop = 0
     this.catId = this.cid
+    this.loadMore()
   },
   methods: {
     sortGoodsList (sortField) {
       console.log('change sortField')
       this.sortField = sortField
       this.resetData()
+      this.loadMore()
     },
     resetData () {
+      // document.body.scrollTop = 0
       this.goodsList = []
       this.page = 1
       this.totalPage = 0
-      this.busy = false
       if (this.sortField !== 'goods_price') {
         this.sortType = ''
       } else {
@@ -79,6 +83,7 @@ export default {
           this.sortType = this.sortType === 'asc' ? 'desc' : 'asc'
         }
       }
+      this.busy = false
     },
     async getCidByCname () {
       if (this.cname !== '' && this.cid === 0) {
@@ -106,19 +111,18 @@ export default {
         }
       })
       this.$hideLoading()
-      console.log(this.goodsList)
       this.goodsList = this.goodsList.concat(goods)
       if (this.page === 1) {
         this.totalPage = Math.ceil(total / this.count)
       }
-      console.log(this.goodsList, total)
-      this.page++
     },
     async loadMore () {
+      console.log('loadMore', this.totalPage)
       await this.getCidByCname()
       this.busy = true
       if (this.page <= this.totalPage || this.totalPage === 0) {
         await this.getGoodsList()
+        this.page++
         this.busy = false
       }
     }
@@ -130,7 +134,8 @@ export default {
 @import "~@/assets/scss/global";
 .page{
   width: 100%;
-  margin-top: $header-h + .8rem;
+  padding-top: $header-h + .8rem;
+  box-sizing: border-box;
   .sort-container{
     width: 100%;
     height: .8rem;

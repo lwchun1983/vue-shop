@@ -67,6 +67,10 @@ export default {
     }
   },
   mounted () {
+    // Message({
+    //   message: '警告哦，这是一条警告消息',
+    //   type: 'warning'
+    // })
     const footerHeight = document.querySelector('.footer-container').offsetHeight
     this.$refs.page.style.paddingBottom = footerHeight + 'px'
     this.scrollDistance = footerHeight
